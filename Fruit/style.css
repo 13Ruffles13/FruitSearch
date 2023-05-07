@@ -1,0 +1,103 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  font-size: 11px;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+input:focus {
+  /* TODO */
+  outline: .15rem solid white;
+}
+
+body {
+  /* TODO */
+  background: linear-gradient(
+    to right,
+    #f5c61d 0%,
+    #ea8f0e 40%,
+    #e66d05 80%,
+    #e15900 100%
+  );
+}
+
+#fruit {
+  /* TODO */
+  background: linear-gradient(
+    to right,
+    #f4ba4b 0%,
+    #f3ae48 40%,
+    #f1aa47 80%,
+    #f0a346 100%
+  );
+  padding-top: 2rem;
+  border-radius: 0.3rem;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 0.2rem solid #e65c00;
+  transition: all .4s;
+}
+
+.search-container {
+  /* TODO */
+  display: grid;
+  position: relative;
+  left: 45rem;
+  bottom: -30rem;
+  width: 20%;
+}
+.search-container input,
+.search-container .suggestions {
+  /* TODO */
+  border-radius: 0.3rem;
+  margin-top: .2rem;
+
+}
+.search-container input {
+  /* TODO */
+  text-align:left;
+}
+.search-container .suggestions {
+  /* TODO */
+  display: grid;
+}
+
+ul {
+  /* TODO */
+  list-style-type: none;
+}
+ul.has-suggestions {
+  /* TODO */
+  padding-top: .5rem;
+  padding-bottom: .5rem;
+  background: linear-gradient(
+  to right,
+  #f4ba4b 0%,
+  #f3ae48 40%,
+  #f1aa47 80%,
+  #f0a346 100%
+);
+  border-radius: 0.3rem;
+
+}
+ul li, b{
+  /* TODO */
+  font-size: 2rem;
+  padding-top: .8rem;
+  width: 112%;
+}
+li{
+  position: relative;
+  right: 12%;
+  text-align: left;
+}
+ul li:hover {
+  /* TODO */
+  background-color: #e15900;
+}
+
+input{
+  /* TODO */
+  font-size: 2rem;
+}
