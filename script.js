@@ -86,78 +86,46 @@ const fruit = [
 function search(str) {
   let arrSearch = [];
 
-  if (!str || str.length === 0) return (arrSearch = []); // empty string
-
-  if (str.charAt(0) === str.charAt(0).toUpperCase()) {
-    arrSearch = fruit.filter((containsFruit) => containsFruit.includes(str));
-  } else {
-    //FORCE CHECK UPPER CASE FRUITS
-    let upperCaseSearch = [];
-    let convertStr = str.charAt(0).toUpperCase() + str.slice(1);
-    upperCaseSearch = fruit.filter((containsFruit) => {
-      return containsFruit.includes(convertStr);
-    });
-
-    let lowerCaseSearch = [];
-    lowerCaseSearch = fruit.filter((containsFruit) => {
-      return containsFruit.includes(str);
-    });
-
-    arrSearch = upperCaseSearch.concat(lowerCaseSearch); // concat upper and lower case arrays together
-
-    let index = 0;
-    for (let i = 0; i < arrSearch.length - 1; i++) {
-      for (let j = i + 1; j < arrSearch.length; j++) {
-        if (arrSearch[i] === arrSearch[j]) {
-          arrSearch.splice(i, 1);
-          index++;
-        }
-      }
-    }
-  }
+  if (!str || str.length === 0) return (arrSearch = []); // Empty string
+  // Filter the fruit array based on input
+  arrSearch = fruit.filter((containsFruit) => containsFruit.includes(str));
   return arrSearch;
 }
 
 function searchHandler(e) {
   // TODO
-  if (e.key === "Shift") return false;
+  if (e.key === "Shift") return; // Ignore Shift key
   showSuggestions(search(this.value), this.value);
 }
 
 function showSuggestions(results, inputVal) {
   // TODO
-  // LOCATION TO ADD LI'S
-  const getUl = document.querySelector(".suggestions ul");
-  // If input is empty delete all li's present
   if (results.length === 0) {
-    while (getUl.firstChild) {
-      getUl.removeChild(getUl.firstChild);
-    }
-    getUl.classList.remove("has-suggestions"); // toggle off CSS
-
-    return false;
-  } else {
-    // if toggle is enabled leave CSS turned on
-    if (getUl.classList.contains("has-suggestions")) {
-      if (getUl.childNodes.length < results.length) {
-        broadSearch(results, getUl, inputVal);
+    // If there are no results, clear suggestions and remove CSS class
+    suggestions.innerHTML = "";
+    suggestions.classList.remove("has-suggestions");
+  } //if
+  else {
+    if (suggestions.classList.contains("has-suggestions")) {
+      if (suggestions.childNodes.length < results.length) {
+        // Broaden the suggestions
+        broadSearch(results, suggestions, inputVal);
       } else {
-        narrowSearch(results, getUl, inputVal);
+        // Narrow down the suggestions
+        narrowSearch(results, suggestions, inputVal);
       }
     } else {
-      toggleSuggestions(results, getUl, inputVal);
+      // Toggle suggestions
+      toggleSuggestions(results, suggestions, inputVal);
     }
-  }
+  } //else
 }
 
 function useSuggestion(e) {
   // TODO
   input.value = e.target.innerText;
-  while (suggestions.firstChild) {
-    suggestions.removeChild(suggestions.firstChild);
-  }
-  suggestions.classList.remove("has-suggestions"); // toggle off CSS
-
+  suggestions.innerHTML = "";
+  suggestions.classList.remove("has-suggestions"); // Toggle off CSS
   return false;
 }
 
@@ -175,10 +143,8 @@ function toggleSuggestions(arr, ulNodes, strVal) {
       createNewLi.innerHTML = convertChar.bold() + newStr;
       ulNodes.appendChild(createNewLi);
     } else {
-      let replaceChar = element;
-      replaceChar = replaceChar.replace(strVal, strVal.bold());
       createNewLi.className = "has-suggestions";
-      createNewLi.innerHTML = replaceChar;
+      createNewLi.innerHTML = element.replace(strVal, strVal.bold());
       ulNodes.appendChild(createNewLi);
     }
   }); // nested else
@@ -189,8 +155,9 @@ function narrowSearch(arr, ulNodes, strVal) {
     if (!arr.includes(ulNodes.childNodes[i].innerText)) {
       ulNodes.childNodes[i].remove();
       i--;
-    } else {
-      // LOWER CASE STR
+    } //if
+    else {
+      // Lowercase string
       if (
         strVal.charAt(0).toUpperCase() ===
         ulNodes.childNodes[i].innerText.charAt(0)
@@ -199,20 +166,19 @@ function narrowSearch(arr, ulNodes, strVal) {
         let capFirstChar = strVal.charAt(0).toUpperCase() + strVal.slice(1);
         ulNodes.childNodes[i].innerHTML = capFirstChar.bold() + newStr;
       } else {
-        // FIND THE OCCURRENCE OF THE STRING
+        // Find the occurrence of the string
         if (strVal.charAt(0) === strVal.charAt(0).toLowerCase()) {
           let findLocation = ulNodes.childNodes[i].innerText.indexOf(strVal);
           let newStr = ulNodes.childNodes[i].innerText.slice(0, findLocation);
           let endStr = ulNodes.childNodes[i].innerText.slice(findLocation);
-          let replaceStr = endStr;
-          replaceStr = replaceStr.replace(strVal, strVal.bold());
-          ulNodes.childNodes[i].innerHTML = newStr + replaceStr;
+          ulNodes.childNodes[i].innerHTML =
+            newStr + endStr.replace(strVal, strVal.bold());
         } else {
           let newStr = ulNodes.childNodes[i].innerText.slice(strVal.length);
           ulNodes.childNodes[i].innerHTML = strVal.bold() + newStr;
         }
       }
-    }
+    } // else
   }
 }
 
@@ -229,26 +195,25 @@ function broadSearch(arr, ulNodes, strVal) {
         createNewLi.innerHTML = convertChar.bold() + newStr;
         ulNodes.appendChild(createNewLi);
       } else {
-        let replaceChar = element;
-        replaceChar = replaceChar.replace(strVal, `<b>${strVal}</b>`);
         createNewLi.className = "has-suggestions";
-        createNewLi.innerHTML = replaceChar;
+        createNewLi.innerHTML = element.replace(strVal, `<b>${strVal}</b>`);
         ulNodes.appendChild(createNewLi);
       }
-    } else {
+    } //if
+    else {
       if (!strVal.toUpperCase()) {
         let convertChar = strVal.toUpperCase();
         let findUpper = element.indexOf(convertChar);
         newStr = element.slice(findUpper + 1);
         ulNodes.childNodes[index].innerHTML = convertChar.bold() + newStr;
       } else {
-        let replaceChar = element;
-        replaceChar = replaceChar.replace(strVal, `<b>${strVal}</b>`);
-        ulNodes.childNodes[index].innerHTML = replaceChar;
+        ulNodes.childNodes[index].innerHTML = element.replace(
+          strVal,
+          `<b>${strVal}</b>`
+        );
       }
-    }
-  });
+    } //else
+  }); //foreach element
 }
-
 input.addEventListener("keyup", searchHandler);
 suggestions.addEventListener("click", useSuggestion);
