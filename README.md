@@ -1,6 +1,6 @@
 # Fruit Search
 
-- Plan and build an Autofill Search Bar for various types of fruit! You may be familiar with autofill from a search engine like Google.
+- Built an Autofill Search Bar for various types of fruit! You may be familiar with autofill from a search engine like Google.
 
 - Populates the search bar with that suggestion.
 
